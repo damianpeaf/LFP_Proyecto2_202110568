@@ -84,6 +84,9 @@ class DFA():
             if isinstance(token, LexicError):
                 return token
 
+        if self.lexeme != '':
+            return self._evalAcceptanceState()
+
         return None
 
     # True -> valid state/character
@@ -203,9 +206,19 @@ class DFA():
                 self.lexeme += currentCharacter
                 return True
 
+            if currentCharacter in LETTERS or currentCharacter in NUMBERS:
+                self.state = 28
+                self.lexeme += currentCharacter
+                return True
+
         if self.state == 17:
             if currentCharacter == "u":
                 self.state = 18
+                self.lexeme += currentCharacter
+                return True
+
+            if currentCharacter in LETTERS or currentCharacter in NUMBERS:
+                self.state = 28
                 self.lexeme += currentCharacter
                 return True
 
@@ -215,9 +228,19 @@ class DFA():
                 self.lexeme += currentCharacter
                 return True
 
+            if currentCharacter in LETTERS or currentCharacter in NUMBERS:
+                self.state = 28
+                self.lexeme += currentCharacter
+                return True
+
         if self.state == 20:
             if currentCharacter == "a":
                 self.state = 21
+                self.lexeme += currentCharacter
+                return True
+
+            if currentCharacter in LETTERS or currentCharacter in NUMBERS:
+                self.state = 28
                 self.lexeme += currentCharacter
                 return True
 
@@ -227,15 +250,30 @@ class DFA():
                 self.lexeme += currentCharacter
                 return True
 
+            if currentCharacter in LETTERS or currentCharacter in NUMBERS:
+                self.state = 28
+                self.lexeme += currentCharacter
+                return True
+
         if self.state == 22:
             if currentCharacter == "s":
                 self.state = 23
                 self.lexeme += currentCharacter
                 return True
 
+            if currentCharacter in LETTERS or currentCharacter in NUMBERS:
+                self.state = 28
+                self.lexeme += currentCharacter
+                return True
+
         if self.state == 23:
             if currentCharacter == "e":
                 self.state = 19
+                self.lexeme += currentCharacter
+                return True
+
+            if currentCharacter in LETTERS or currentCharacter in NUMBERS:
+                self.state = 28
                 self.lexeme += currentCharacter
                 return True
 
@@ -360,7 +398,9 @@ class DFA():
             self._resetAutomaton()
             return token
 
-        return self._generateError("Invalid token")
+        error = self._generateError("Invalid token")
+        self._resetAutomaton()
+        return error
 
     def _generateToken(self, tokenType):
         token = Token(tokenType, self.lexeme, self.row, self.col)

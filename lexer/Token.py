@@ -16,12 +16,17 @@ class TokenType(Enum):
     PARENTHESIS_OPENING = auto()
     PARENTHESIS_CLOSING = auto()
     COMMA = auto()
+    EOF = auto()
 
 
 class Token():
 
-    def __init__(self, tokenType: TokenType, lexeme: str, row: int, col: int) -> None:
+    def __init__(self, tokenType: TokenType, lexeme: str = None, row: int = None, col: int = None):
         self.tokenType = tokenType
         self.lexeme = lexeme
         self.row = row
         self.col = col
+
+        # hidden optional attributes
+        self.posibleLexemes = None
+        self.idType = None
