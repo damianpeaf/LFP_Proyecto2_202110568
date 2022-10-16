@@ -4,6 +4,7 @@ from tkinter import messagebox
 from os.path import exists
 
 from lexer.Lexer import Lexer
+from parser2.Parser import Parser
 
 
 class FileEditor():
@@ -73,7 +74,9 @@ class FileEditor():
             file.close()
 
             lexer = Lexer(text)
-            tokens = lexer.runLexicAnalysis()
+            lexer.runLexicAnalysis()
+            parser = Parser()
+            parser.runSyntacticAnalysis()
         except Exception as e:
             print(e)
             messagebox.showwarning(

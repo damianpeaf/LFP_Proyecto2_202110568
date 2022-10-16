@@ -13,6 +13,8 @@ class Lexer():
     def __init__(self, sourceStr: str):
         self.sourceStr = sourceStr
         self.dfa = DFA(self.sourceStr)
+        Lexer.tokenFlow = []
+        Lexer.lexicErrors = []
 
     def runLexicAnalysis(self):
         resp = True
@@ -32,5 +34,5 @@ class Lexer():
     def printTokenFlow(self):
         i = 1
         for token in self.tokenFlow:
-            print(str(i), "TIPO: ", token.tokenType, "  |   LEXEMA: ", token.lexeme)
+            print(str(i), "TIPO: ", token.tokenType, "  |   LEXEMA: ", token.lexeme, "  |   FILA: ", token.row, "  |   COLUMNA: ", token.col)
             i += 1

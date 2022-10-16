@@ -12,8 +12,8 @@ class DFA():
         self.stringFlow = stringFlow.strip()
 
         self.currentIndex = 0
-        self.row = 0
-        self.col = 0
+        self.row = 1
+        self.col = 1
 
         self.skipBlankSpaces = True
         self.skipLineBreaks = True
@@ -42,10 +42,10 @@ class DFA():
 
             # * Skips line breaks
             if self.skipLineBreaks and currentCharacter == '\n':
+                token = self._evalAcceptanceState()
                 self.row += 1
                 self.col = 1
                 self.currentIndex += 1
-                token = self._evalAcceptanceState()
 
             if token == None:
                 token = self._evalCharacter()
@@ -99,9 +99,10 @@ class DFA():
         if currentCharacter == ' ':
 
             if self.skipBlankSpaces:
+                token = self._evalAcceptanceState()
                 self.col += 1
                 self.currentIndex += 1
-                return self._evalAcceptanceState()
+                return token
             else:
                 self.lexeme += currentCharacter
                 return True

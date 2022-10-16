@@ -17,7 +17,7 @@ Definicion de propiedades
 //#$inicio de contlogin
 contlogin.setAncho(190);
 contlogin.setAlto(150);
-contlogin.setColorFondo(47,79,79);
+contlogin.setColorFondo(47,79,190);
 //#$fin de contlogin
 //#$inicio de contFondo
 contFondo.setAncho(800);
