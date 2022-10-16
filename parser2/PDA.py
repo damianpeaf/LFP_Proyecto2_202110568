@@ -1,5 +1,7 @@
 
+from queue import Empty
 from typing import List
+from lexer.LexicError import LexicError
 from parser2.SyntaxError import SyntaxError
 from lexer.Token import Token, TokenType
 from parser2.NonTerminal import NonTerminal
@@ -7,7 +9,7 @@ from constants.validScopeToken import CONTROL_SCOPE_TOKEN, PROPERTIES_SCOPE_TOKE
 from constants.validControlToken import VALID_CONTROL_TOKEN
 from constants.validVariableToken import VALID_VARIABLE_TOKEN
 from constants.validFunctionToken import VALID_FUNCTION_TOKEN
-from constants.validUtilToken import OPEN_PARENTHESIS_TOKEN, CLOSE_PARENTHESIS_TOKEN, COMMA_TOKEN, POINT_TOKEN, SEMICOLON_TOKEN, EOF_TOKEN, BOOLEAN_TOKEN, NUMBER_TOKEN, STRING_TOKEN
+from constants.validUtilToken import OPEN_PARENTHESIS_TOKEN, CLOSE_PARENTHESIS_TOKEN, COMMA_TOKEN, POINT_TOKEN, SEMICOLON_TOKEN, EOF_TOKEN, BOOLEAN_TOKEN, NUMBER_TOKEN, STRING_TOKEN, EMPTY_TOKEN
 
 
 class PDA():
@@ -24,26 +26,31 @@ class PDA():
         self._stackPush(NonTerminal.S)
 
     def evalTokens(self):
-        while self.currentTokenIndex < len(self.tokenFlow):
+        while self._stackTop() != EOF_TOKEN:
             resp = self._evalState()
 
             if isinstance(resp, SyntaxError):
                 return resp
 
+        # POP EOF
+        self._stackPop()
+
         return None
 
     def _evalState(self):
-        evaluatedToken = self.tokenFlow[self.currentTokenIndex]
+        evaluatedToken = EMPTY_TOKEN
         stackTop = self._stackTop()
+
+        try:
+            evaluatedToken = self.tokenFlow[self.currentTokenIndex]
+        except IndexError:
+            if not isinstance(stackTop, NonTerminal):
+                evaluatedToken.row = self.tokenFlow[self.currentTokenIndex-1].row
+                evaluatedToken.col = self.tokenFlow[self.currentTokenIndex-1].col
+                return SyntaxError(evaluatedToken, [stackTop])
 
         # * NonTerminal replacement rules
         # ? isinstance(self._stackTop(), NonTerminal)
-
-        # EOF
-        if stackTop == EOF_TOKEN:
-            self._stackPop()
-            self.currentTokenIndex += 1
-            return True
 
         # S -> 4 11 A 11 5 4 11 B 11 5 4 11 C 11 5
         if stackTop == NonTerminal.S:
@@ -71,7 +78,7 @@ class PDA():
         # A -> 11 11 7 A | epsilon
         if stackTop == NonTerminal.A:
             # ! Preanalysis
-            if evaluatedToken.tokenType == TokenType.ID and evaluatedToken.lexeme not in CONTROL_SCOPE_TOKEN.lexeme and evaluatedToken.lexeme not in PROPERTIES_SCOPE_TOKEN.lexeme and evaluatedToken.lexeme not in LOCATION_SCOPE_TOKEN.lexeme:
+            if evaluatedToken.tokenType == TokenType.ID and evaluatedToken.lexeme != CONTROL_SCOPE_TOKEN.lexeme and evaluatedToken.lexeme != PROPERTIES_SCOPE_TOKEN.lexeme and evaluatedToken.lexeme != LOCATION_SCOPE_TOKEN.lexeme:
                 replace = [
                     VALID_CONTROL_TOKEN,
                     VALID_VARIABLE_TOKEN,
@@ -87,7 +94,7 @@ class PDA():
 
         # B -> 11 6 11 12 D 13 7 B | epsilon
         if stackTop == NonTerminal.B:
-            if evaluatedToken.tokenType == TokenType.ID and evaluatedToken.lexeme not in CONTROL_SCOPE_TOKEN.lexeme and evaluatedToken.lexeme not in PROPERTIES_SCOPE_TOKEN.lexeme and evaluatedToken.lexeme not in LOCATION_SCOPE_TOKEN.lexeme:
+            if evaluatedToken.tokenType == TokenType.ID and evaluatedToken.lexeme != CONTROL_SCOPE_TOKEN.lexeme and evaluatedToken.lexeme != PROPERTIES_SCOPE_TOKEN.lexeme and evaluatedToken.lexeme != LOCATION_SCOPE_TOKEN.lexeme:
                 replace = [
                     VALID_VARIABLE_TOKEN,
                     POINT_TOKEN,
@@ -240,25 +247,28 @@ class PDA():
                 return SyntaxError(evaluatedToken, [VALID_FUNCTION_TOKEN])
 
             if stackTop == CONTROL_SCOPE_TOKEN:
-                # COPY ID TYPE
-                evaluatedToken.idType = CONTROL_SCOPE_TOKEN.idType
-                self._stackPop()
-                self.currentTokenIndex += 1
-                return True
+                if evaluatedToken.lexeme == CONTROL_SCOPE_TOKEN.lexeme:
+                    evaluatedToken.idType = CONTROL_SCOPE_TOKEN.idType
+                    self._stackPop()
+                    self.currentTokenIndex += 1
+                    return True
+                return SyntaxError(evaluatedToken, [CONTROL_SCOPE_TOKEN])
 
             if stackTop == LOCATION_SCOPE_TOKEN:
-                # COPY ID TYPE
-                evaluatedToken.idType = LOCATION_SCOPE_TOKEN.idType
-                self._stackPop()
-                self.currentTokenIndex += 1
-                return True
+                if evaluatedToken.lexeme == LOCATION_SCOPE_TOKEN.lexeme:
+                    evaluatedToken.idType = LOCATION_SCOPE_TOKEN.idType
+                    self._stackPop()
+                    self.currentTokenIndex += 1
+                    return True
+                return SyntaxError(evaluatedToken, [LOCATION_SCOPE_TOKEN])
 
             if stackTop == PROPERTIES_SCOPE_TOKEN:
-                # COPY ID TYPE
-                evaluatedToken.idType = PROPERTIES_SCOPE_TOKEN.idType
-                self._stackPop()
-                self.currentTokenIndex += 1
-                return True
+                if evaluatedToken.lexeme == PROPERTIES_SCOPE_TOKEN.lexeme:
+                    evaluatedToken.idType = PROPERTIES_SCOPE_TOKEN.idType
+                    self._stackPop()
+                    self.currentTokenIndex += 1
+                    return True
+                return SyntaxError(evaluatedToken, [PROPERTIES_SCOPE_TOKEN])
 
         # 12 -> (
         if stackTop == OPEN_PARENTHESIS_TOKEN and evaluatedToken.tokenType == TokenType.PARENTHESIS_OPENING:
@@ -285,6 +295,8 @@ class PDA():
         return self.stack[-1]
 
     def _stackPop(self):
+        if len(self.stack) == 0:
+            return None
         return self.stack.pop()
 
     def _stackPush(self, item):

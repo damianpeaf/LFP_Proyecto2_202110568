@@ -17,6 +17,7 @@ class TokenType(Enum):
     PARENTHESIS_CLOSING = auto()
     COMMA = auto()
     EOF = auto()
+    EMPTY = auto()
 
 
 class Token():

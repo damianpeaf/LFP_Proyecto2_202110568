@@ -96,6 +96,9 @@ class DFA():
     def _evalCharacter(self):
         currentCharacter = self.stringFlow[self.currentIndex]
 
+        if currentCharacter == '!':
+            print('!')
+
         if currentCharacter == ' ':
 
             if self.skipBlankSpaces:
@@ -165,6 +168,10 @@ class DFA():
                 self.state = 29
                 self.lexeme += currentCharacter
                 return True
+            error = self._generateError("Invalid token")
+            self._resetAutomaton()
+            self.currentIndex += 1
+            return error
 
         if self.state == 1:
             if currentCharacter == '/':
@@ -399,7 +406,7 @@ class DFA():
             self._resetAutomaton()
             return token
 
-        error = self._generateError("Invalid token")
+        error = self._generateError("Lexema no reconocido")
         self._resetAutomaton()
         return error
 
@@ -408,4 +415,6 @@ class DFA():
         return token
 
     def _generateError(self, msg) -> LexicError:
+        currentCharacter = self.stringFlow[self.currentIndex]
+        self.lexeme += currentCharacter
         return LexicError(self.lexeme, msg, self.row, self.col)

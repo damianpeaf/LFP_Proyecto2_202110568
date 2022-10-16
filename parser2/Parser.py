@@ -1,3 +1,4 @@
+from typing import List
 from lexer.Lexer import Lexer
 from parser2.PDA import PDA
 from parser2.SyntaxError import SyntaxError
@@ -5,18 +6,18 @@ from parser2.SyntaxError import SyntaxError
 
 class Parser():
 
+    syntaxErrors: List[SyntaxError] = []
+
     def __init__(self):
-        pass
+        Parser.syntaxErrors = []
 
     def runSyntacticAnalysis(self):
 
-        if len(Lexer.lexicErrors) > 0:
-            print("Lexic errors found, aborting sintax analysis")
-            raise Exception("Lexic errors found, aborting sintax analysis")
+        # if len(Lexer.lexicErrors) > 0:
+        #     return
 
-        if len(Lexer.tokenFlow) == 0:
-            print("No tokens found, aborting sintax analysis")
-            raise Exception("No tokens found, aborting sintax analysis")
+        # if len(Lexer.tokenFlow) == 0:
+        #     return
 
         resp = True
         pda = PDA(Lexer.tokenFlow)
@@ -24,6 +25,7 @@ class Parser():
             resp = pda.evalTokens()
 
         if isinstance(resp, SyntaxError):
-            print(resp)
+            Parser.syntaxErrors.append(resp)
+            return
 
-        print("Sintax analysis completed successfully")
+        return True
