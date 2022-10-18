@@ -35,6 +35,10 @@ class PDA():
         # POP EOF
         self._stackPop()
 
+        if self.currentTokenIndex < len(self.tokenFlow):
+            # !
+            return SyntaxError(self.tokenFlow[self.currentTokenIndex], [EMPTY_TOKEN])
+
         return None
 
     def _evalState(self):

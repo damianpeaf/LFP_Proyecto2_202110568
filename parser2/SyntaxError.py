@@ -44,4 +44,4 @@ class SyntaxError():
         for token in self.expectedToken:
             expected += token.tokenType.name + " "
 
-        return f"Syntax error: {self.recivedToken.lexeme} found, expected {expeted}"
+        return f"Syntax error: {self.recivedToken.lexeme} found, expected {expected}"

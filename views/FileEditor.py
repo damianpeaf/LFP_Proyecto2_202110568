@@ -90,6 +90,13 @@ class FileEditor():
                 self.errorTable.table.pack(expand=1, fill=BOTH)
                 self.errorTable.loadData(errors)
 
+            if len(Core.runTimeErrors) > 0:
+                self.errorWindow = Toplevel(self.window)
+                self.errorWindow.geometry("1000x900")
+                self.errorTable = ErrorTable(self.errorWindow)
+                self.errorTable.table.pack(expand=1, fill=BOTH)
+                self.errorTable.loadData(Core.runTimeErrors)
+
         except Exception as e:
             print(e)
             messagebox.showwarning(

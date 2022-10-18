@@ -3,7 +3,7 @@ Boton a;
 Controles-->
 
 <!--propiedades
-a.setAlineacfdsion("Hola mundo");
+a.setAlineacion("Centro");
 propiedades-->
 
 <!--Colocacion
