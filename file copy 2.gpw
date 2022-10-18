@@ -9,41 +9,32 @@ Texto Texto0;
 Contenedor contlogo2;
 Contenedor ContLogo1;
 Contenedor ContBody;
-Texto JTextField0;
 Controles -->
 <!--propiedades
 /*
 Definicion de propiedades
 */
-
 //#$inicio de contlogin
 contlogin.setAncho(190);
 contlogin.setAlto(150);
-contlogin.setColorFondo(47,79,79);
+contlogin.setColorFondo(47,79,190);
 //#$fin de contlogin
-
 //#$inicio de contFondo
 contFondo.setAncho(800);
 contFondo.setAlto(100);
 contFondo.setColorFondo(64,64,64);
 //#$fin de contFondo
-
 //#$inicio de cmdIngresar
 cmdIngresar.setTexto("Ingresar");
 contlogin.add(cmdIngresar);
 //#$fin de cmdIngresar
-
 //#$inicio de pswClave
-pswClave.setTexto("123");
-pswClave.setAlto(20);
-pswClave.setAncho(100);
+pswClave.setTexto("");
 //#$fin de pswClave
-
 //#$inicio de etiqueta passw
 passw.setAncho(53); passw.setAlto(13 );
 passw.setColorLetra(128,128,128);
 passw.setTexto("Password");
-
 //#$fin de passw
 
 //#$inicio de Nombre
@@ -52,12 +43,10 @@ Nombre.setAlto(13);
 Nombre.setColorLetra(128,128,128);
 Nombre.setTexto("Nombre");
 //#$fin de Nombre
-
 //#$inicio de JTextField0
 
 JTextField0.setTexto("");
-JTextField0.setAlto(20);
-JTextField0.setAncho(100);
+
 //#$fin de JTextField0
 
 //#$inicio de contlogo2
@@ -93,7 +82,6 @@ contlogin.add(passw);
 cmdIngresar.setPosicion(40,100);
 pswClave.setPosicion(67,48);
 contlogin.add(pswClave);
-
 Nombre.setPosicion(8,21);
 contlogin.add(Nombre);
 JTextField0.setPosicion(65,20);

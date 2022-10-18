@@ -23,7 +23,6 @@ class Core():
 
         self.createSymbolTable()
         self.applyProperties()
-        print('done')
 
     @classmethod
     def getElement(cls, targetId: str):

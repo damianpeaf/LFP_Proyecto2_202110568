@@ -96,9 +96,6 @@ class DFA():
     def _evalCharacter(self):
         currentCharacter = self.stringFlow[self.currentIndex]
 
-        if currentCharacter == '!':
-            print('!')
-
         if currentCharacter == ' ':
 
             if self.skipBlankSpaces:

@@ -7,6 +7,7 @@ from core.Core import Core
 
 from lexer.Lexer import Lexer
 from parser2.Parser import Parser
+from reports.HtmlGenerator import HtmlGenerator
 
 
 class FileEditor():
@@ -65,7 +66,6 @@ class FileEditor():
             self.editor.insert(END, file.read())
             file.close()
         except Exception as e:
-            print(e)
             messagebox.showwarning(
                 title="Aviso", message="Error al leer el archivo")
 
@@ -82,13 +82,13 @@ class FileEditor():
             core = Core()
             errors = core.getErrors()
 
-            print(errors)
             if len(errors) > 0:
                 self.errorWindow = Toplevel(self.window)
                 self.errorWindow.geometry("1000x900")
                 self.errorTable = ErrorTable(self.errorWindow)
                 self.errorTable.table.pack(expand=1, fill=BOTH)
                 self.errorTable.loadData(errors)
+                return
 
             if len(Core.runTimeErrors) > 0:
                 self.errorWindow = Toplevel(self.window)
@@ -96,9 +96,11 @@ class FileEditor():
                 self.errorTable = ErrorTable(self.errorWindow)
                 self.errorTable.table.pack(expand=1, fill=BOTH)
                 self.errorTable.loadData(Core.runTimeErrors)
+                return
+
+            HtmlGenerator()
 
         except Exception as e:
-            print(e)
             messagebox.showwarning(
                 title="Aviso", message="Error al leer el archivo")
 

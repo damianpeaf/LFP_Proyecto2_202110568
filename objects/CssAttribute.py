@@ -16,4 +16,4 @@ class CssAttribute():
 
     def __init__(self, type: CssAttributeType, value: List):
         self.type = type
-        self.value = value
+        self.value: str | List = value

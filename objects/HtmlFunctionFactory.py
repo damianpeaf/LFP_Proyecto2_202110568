@@ -110,9 +110,13 @@ class HtmlFunctionFactory():
             return "La funcion no existe"
 
         # clean the params
-        params = []
-        for param in self.params:
-            params.append(param.lexeme)
+        params = None
+        if len(self.params) > 1:
+            params = []
+            for param in self.params:
+                params.append(param.lexeme)
+        else:
+            params = self.params[0].lexeme
 
         # execute the function
         if isinstance(targetAttribute, HtmlAttributeType):

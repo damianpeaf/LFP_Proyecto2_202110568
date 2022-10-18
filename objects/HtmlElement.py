@@ -2,7 +2,7 @@
 
 from typing import List
 from objects.CssAttribute import CssAttribute
-from objects.HtmlAttribute import HtmlAttribute
+from objects.HtmlAttribute import HtmlAttribute, HtmlAttributeType
 from objects.HtmlElementType import HtmlElementType
 
 
@@ -12,8 +12,8 @@ class HtmlElement():
         self.id = id
         self.tag = tag
         self.attributes = attributes
-        self.styles = styles
-        self.children = []
+        self.styles: List[CssAttribute] = []
+        self.children: List[HtmlElement] = []
 
     def addChild(self, child):
         self.children.append(child)
@@ -35,3 +35,8 @@ class HtmlElement():
                 self.styles.append(style)
                 return True
         self.styles.append(style)
+
+    def getAttribute(self, type: HtmlAttributeType):
+        for atr in self.attributes:
+            if atr.type == type:
+                return atr.value

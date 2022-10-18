@@ -12,6 +12,6 @@ class HtmlAttributeType(Enum):
 
 class HtmlAttribute():
 
-    def __init__(self, type: HtmlAttributeType, value: List):
+    def __init__(self, type: HtmlAttributeType, value:  str | bool):
         self.type = type
         self.value = value
