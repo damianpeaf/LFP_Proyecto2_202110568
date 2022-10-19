@@ -37,7 +37,7 @@ class PDA():
 
         if self.currentTokenIndex < len(self.tokenFlow):
             # !
-            return SyntaxError(self.tokenFlow[self.currentTokenIndex], [EMPTY_TOKEN])
+            return SyntaxError(self.tokenFlow[self.currentTokenIndex], [EOF_TOKEN])
 
         return None
 
@@ -154,6 +154,7 @@ class PDA():
                 self._replaceTop(replace)
                 return True
 
+            self._stackPop()
             return SyntaxError(evaluatedToken, [BOOLEAN_TOKEN, NUMBER_TOKEN, STRING_TOKEN, VALID_VARIABLE_TOKEN])
 
         # E -> 14 D | epsilon
@@ -237,6 +238,7 @@ class PDA():
                     self.currentTokenIndex += 1
                     return True
 
+                self._stackPop()
                 return SyntaxError(evaluatedToken, [VALID_CONTROL_TOKEN])
 
             if stackTop == VALID_FUNCTION_TOKEN:
@@ -248,6 +250,7 @@ class PDA():
                     self.currentTokenIndex += 1
                     return True
 
+                self._stackPop()
                 return SyntaxError(evaluatedToken, [VALID_FUNCTION_TOKEN])
 
             if stackTop == CONTROL_SCOPE_TOKEN:
@@ -256,6 +259,8 @@ class PDA():
                     self._stackPop()
                     self.currentTokenIndex += 1
                     return True
+
+                self._stackPop()
                 return SyntaxError(evaluatedToken, [CONTROL_SCOPE_TOKEN])
 
             if stackTop == LOCATION_SCOPE_TOKEN:
@@ -264,6 +269,8 @@ class PDA():
                     self._stackPop()
                     self.currentTokenIndex += 1
                     return True
+
+                self._stackPop()
                 return SyntaxError(evaluatedToken, [LOCATION_SCOPE_TOKEN])
 
             if stackTop == PROPERTIES_SCOPE_TOKEN:
@@ -272,6 +279,8 @@ class PDA():
                     self._stackPop()
                     self.currentTokenIndex += 1
                     return True
+
+                self._stackPop()
                 return SyntaxError(evaluatedToken, [PROPERTIES_SCOPE_TOKEN])
 
         # 12 -> (
@@ -292,10 +301,18 @@ class PDA():
             self.currentTokenIndex += 1
             return True
 
+        # print('SyntaxError: Unexpected token', self.currentTokenIndex)
+        return self._generateSyntaxError()
+
+    def _generateSyntaxError(self):
         print('SyntaxError: Unexpected token', self.currentTokenIndex)
-        return SyntaxError(evaluatedToken, [stackTop])
+        return SyntaxError(self.tokenFlow[self.currentTokenIndex], [self._stackPop()])
 
     def _stackTop(self):
+
+        if len(self.stack) == 0:
+            return EOF_TOKEN
+
         return self.stack[-1]
 
     def _stackPop(self):

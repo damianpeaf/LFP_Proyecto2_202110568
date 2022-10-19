@@ -1,5 +1,6 @@
 from typing import List
 from lexer.Lexer import Lexer
+from lexer.Token import TokenType
 from parser2.PDA import PDA
 from parser2.SyntaxError import SyntaxError
 
@@ -23,9 +24,10 @@ class Parser():
         pda = PDA(Lexer.tokenFlow)
         while resp == True:
             resp = pda.evalTokens()
-
-        if isinstance(resp, SyntaxError):
-            Parser.syntaxErrors.append(resp)
-            return
+            if isinstance(resp, SyntaxError):
+                Parser.syntaxErrors.append(resp)
+                if resp.expectedToken[0].tokenType == TokenType.EOF:
+                    break
+                resp = True
 
         return True
