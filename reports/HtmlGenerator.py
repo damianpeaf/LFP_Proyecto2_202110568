@@ -1,5 +1,7 @@
 
 
+import os
+import webbrowser
 from core.Core import Core
 from objects.CssAttribute import CssAttribute, CssAttributeType
 from objects.HtmlAttribute import HtmlAttributeType
@@ -17,6 +19,10 @@ class HtmlGenerator():
         self._generateCss()
         self._generateFiles()
         print('Reporte generado con exito')
+
+        filePath = os.getcwd().replace('\\', '/') + "/docs/proyecto.html"
+
+        webbrowser.get("C:/Program Files (x86)/Google/Chrome/Application/chrome.exe %s").open_new_tab(filePath)
 
     def _createFile(self, content, filename):
         try:

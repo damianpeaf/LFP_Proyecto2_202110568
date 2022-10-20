@@ -3,6 +3,7 @@ from tkinter import filedialog
 from tkinter import messagebox
 from os.path import exists
 from components.ErrorTable import ErrorTable
+from components.TokenTable import TokenTable
 from core.Core import Core
 
 from lexer.Lexer import Lexer
@@ -76,11 +77,17 @@ class FileEditor():
             file.close()
 
             lexer = Lexer(text)
-            lexer.runLexicAnalysis()
+            tokens = lexer.runLexicAnalysis()
             parser = Parser()
             parser.runSyntacticAnalysis()
             core = Core()
             errors = core.getErrors()
+
+            self.tokenWindow = Toplevel(self.window)
+            self.tokenWindow.geometry("1000x900")
+            self.tokenTable = TokenTable(self.tokenWindow)
+            self.tokenTable.table.pack(expand=1, fill=BOTH)
+            self.tokenTable.loadData(tokens)
 
             if len(errors) > 0:
                 self.errorWindow = Toplevel(self.window)

@@ -28,8 +28,16 @@ class Lexer():
             elif isinstance(resp, LexicError):
                 self.lexicErrors.append(resp)
 
-        self.printTokenFlow()
-        return self.tokenFlow
+        # self.printTokenFlow()
+        return self.getTokens()
+
+    def getTokens(self):
+        tokens = []
+        number = 1
+        for token in Lexer.tokenFlow:
+            tokens.append({'number': number, 'row': token.row, 'column': token.col, 'lexema': token.lexeme, 'type': token.tokenType.name})
+            number += 1
+        return tokens
 
     def printTokenFlow(self):
         i = 1

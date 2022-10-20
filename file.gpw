@@ -1,5 +1,5 @@
 <!--Controles
-Contenedor contlogin;
+Contenedor contlogin
 Contenedor contFondo;
 Boton cmdIngresar;
 Clave pswClave;
@@ -15,7 +15,6 @@ Controles -->
 /*
 Definicion de propiedades
 */
-
 //#$inicio de contlogin
 contlogin.setAncho(190);
 contlogin.setAlto(150);
