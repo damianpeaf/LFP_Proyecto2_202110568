@@ -7,6 +7,7 @@ class ErrorTable():
     def __init__(self, window):
         self.window = window
         self.table = ttk.Treeview(self.window, height=35)
+        self.window.title("Tabla de errores")
         self.table['columns'] = ('Tipo', 'Fila', 'Columna', 'Lexema', 'Esperaba', 'Descripcion')
 
         self.table.column('#0', width=0, stretch=NO)

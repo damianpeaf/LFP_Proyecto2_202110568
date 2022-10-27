@@ -6,6 +6,7 @@ class TokenTable():
 
     def __init__(self, window):
         self.window = window
+        self.window.title("Tabla de tokens")
         self.table = ttk.Treeview(self.window, height=35)
         self.table['columns'] = ('No.', 'Fila', 'Columna', 'Lexema', 'Tipo')
 

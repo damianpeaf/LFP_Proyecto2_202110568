@@ -107,6 +107,8 @@ class DFA():
                 self.lexeme += currentCharacter
                 return True
 
+        # * ...
+
         if self.state == 0:
             if currentCharacter == '/':
                 self.state = 1
@@ -168,6 +170,7 @@ class DFA():
             error = self._generateError("Invalid token")
             self._resetAutomaton()
             self.currentIndex += 1
+            self.col += 1
             return error
 
         if self.state == 1:

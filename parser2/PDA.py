@@ -54,7 +54,6 @@ class PDA():
                 return SyntaxError(evaluatedToken, [stackTop])
 
         # * NonTerminal replacement rules
-        # ? isinstance(self._stackTop(), NonTerminal)
 
         # S -> 4 11 A 11 5 4 11 B 11 5 4 11 C 11 5
         if stackTop == NonTerminal.S:
