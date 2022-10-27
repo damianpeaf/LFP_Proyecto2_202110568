@@ -31,7 +31,7 @@ class MainMenu():
               bg='#1B1F3B',
               fg='white').pack()
         Label(self.masterWindow,
-              text="Proyecto 1",
+              text="Proyecto 2",
               pady=5,
               font=titleFont,
               bg='#1B1F3B',
