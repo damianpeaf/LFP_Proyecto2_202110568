@@ -47,6 +47,12 @@ class HtmlFunctionFactory():
                 return validations
 
         elif self.targetAttribute == 'setAlineacion':
+
+            # type conversion
+
+            if self.params[0].tokenType == TokenType.ID:
+                self.params[0].tokenType = TokenType.STRING
+
             targetAttribute = CssAttributeType.ALIGNMENT
 
             validations = self._validateParams([TokenType.STRING])
@@ -72,6 +78,12 @@ class HtmlFunctionFactory():
                 return validations
 
         elif self.targetAttribute == 'setGrupo':
+
+            # type conversion
+
+            if self.params[0].tokenType == TokenType.ID:
+                self.params[0].tokenType = TokenType.STRING
+
             targetAttribute = HtmlAttributeType.GROUP
             validations = self._validateParams([TokenType.STRING])
             if validations != True:

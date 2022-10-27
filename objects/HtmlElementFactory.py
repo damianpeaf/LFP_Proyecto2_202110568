@@ -25,13 +25,15 @@ class HtmlElementFactory():
         elif self.elementType == "Check":
             return HtmlElement(self.id, HtmlElementType.CHECKBOX, [
                 # HtmlAttribute(HtmlAttributeType.TEXT, ""),
-                HtmlAttribute(HtmlAttributeType.IS_CHECKED, False)
+                HtmlAttribute(HtmlAttributeType.IS_CHECKED, False),
+                HtmlAttribute(HtmlAttributeType.TEXT, "")
             ])
         elif self.elementType == "RadioBoton":
             return HtmlElement(self.id, HtmlElementType.RADIOBUTTON, [
                 # HtmlAttribute(HtmlAttributeType.TEXT, ""),
                 HtmlAttribute(HtmlAttributeType.IS_CHECKED, False),
-                HtmlAttribute(HtmlAttributeType.GROUP, "")
+                HtmlAttribute(HtmlAttributeType.GROUP, ""),
+                HtmlAttribute(HtmlAttributeType.TEXT, "")
             ])
         elif self.elementType == "Texto":
             return HtmlElement(self.id, HtmlElementType.TEXT, [

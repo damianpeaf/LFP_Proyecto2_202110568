@@ -1,5 +1,5 @@
 <!--Controles
-Contenedor contlogin
+Contenedor contlogin;
 Contenedor contFondo;
 Boton cmdIngresar;
 Clave pswClave;

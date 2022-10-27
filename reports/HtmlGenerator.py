@@ -54,7 +54,7 @@ class HtmlGenerator():
 
                 if style.value == "Centro":
                     aligment = "center"
-                elif style.value == "Derecha":
+                elif style.value == "Derecho":
                     aligment = "right"
 
                 props += f"text-align: {aligment};\n"
@@ -120,25 +120,27 @@ class HtmlGenerator():
 
         if element.tag == HtmlElementType.CHECKBOX:
             isChecked = element.getAttribute(HtmlAttributeType.IS_CHECKED) or ""
+            value = element.getAttribute(HtmlAttributeType.TEXT) or ""
 
             checked = ""
             if isChecked:
                 checked = "checked"
 
-            return f"<input id='{element.id}' type='checkbox' value='{value}' {checked}/>"
+            return f"<input id='{element.id}' type='checkbox' value='{value}' {checked}/>{value}"
 
         if element.tag == HtmlElementType.RADIOBUTTON:
             group = element.getAttribute(HtmlAttributeType.GROUP) or ""
             isChecked = element.getAttribute(HtmlAttributeType.IS_CHECKED) or ""
+            value = element.getAttribute(HtmlAttributeType.TEXT) or ""
 
             checked = ""
             if isChecked:
                 checked = "checked"
 
-            return f"<input id='{element.id}' type='radio' name='{group}' {checked} />"
+            return f"<input id='{element.id}' type='radio' name='{group}' {checked} />{value}"
 
         if element.tag == HtmlElementType.TEXTAREA:
-            value = element.getAttribute(HtmlAttributeType.VALUE) or ""
+            value = element.getAttribute(HtmlAttributeType.TEXT) or ""
             return f"<textarea id={element.id}>{value}</textarea>"
 
         if element.tag == HtmlElementType.PASSWORD:

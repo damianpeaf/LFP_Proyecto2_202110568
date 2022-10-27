@@ -36,7 +36,7 @@ class HtmlElement():
                 return True
         self.styles.append(style)
 
-    def getAttribute(self, type: HtmlAttributeType):
+    def getAttribute(self, atrType: HtmlAttributeType):
         for atr in self.attributes:
-            if atr.type == type:
+            if atr.type == atrType:
                 return atr.value
